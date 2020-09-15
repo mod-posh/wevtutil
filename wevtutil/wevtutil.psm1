@@ -226,6 +226,83 @@ Function Get-Publisher {
   }
  }
 }
+Function Export-Log {
+ <#
+        .SYNOPSIS
+            Exports events from an event log, from a log file, or using
+            a structured query to the specified file.
+        .DESCRIPTION
+            Exports events from an event log, from a log file, or using
+            a structured query to the specified file. By default, you provide
+            a log name for <Logname>. However, if you use the LogFile option, then
+            <Logname> must be a path to a log file. If you use the StructuredQuery
+            option, <Logname> must be a path to a file that contains a structured
+            query. <Exportfile> is a path to the file where the exported events
+            will be stored.
+        .PARAMETER Logname
+            The name of a log or path to a logfile/structured query file
+        .PARAMETER ExportFile
+            A path to the file where the exported events will be stored.
+        .PARAMETER LogFile
+            Specifies that the events should be read from a log or from a log
+            file. <Logfile> can be true or false. If true, the parameter to the
+            command is the path to a log file.
+        .PARAMETER StructuredQuery
+            Specifies that events should be obtained with a structured query.
+            <Structquery> can be true or false. If true, <Path> is the path to
+            a file that contains a structured query.
+        .PARAMETER Query
+            Defines the XPath query to filter the events that are read or
+            exported. If this option is not specified, all events will be
+            returned or exported. This option is not available when /sq is true.
+        .PARAMETER Overwrite
+            Specifies that the export file should be overwritten. <Overwrite>
+            can be true or false. If true, and the export file specified in
+            <Exportfile> already exists, it will be overwritten without
+            confirmation.
+        .EXAMPLE
+            Export-WevtLog -LogName Microsoft-Windows-CAPI2/Operational -ExportFile C:\temp\capi2-operational.evtx
+
+            # jspatton@IT08082 | 14:51:10 | 03-02-2015 | C:\projects\mod-posh\powershell\production #
+            Get-WevtLogInfo -LogName C:\temp\capi2-operational.evtx -LogFile
+
+            creationTime: 2015-03-02T20:51:10.530Z
+            lastAccessTime: 2015-03-02T20:51:10.530Z
+            lastWriteTime: 2015-03-02T20:51:10.655Z
+            fileSize: 1118208
+            attributes: 32
+            numberOfLogRecords: 409
+            oldestRecordNumber: 1
+
+            Description
+            -----------
+            Export the CAPI log to a file, then get information from the file using Get-WevtLogInfo
+        .NOTES
+            FunctionName : Export-WevtLog
+            Created by   : jspatton
+            Date Coded   : 03/02/2015 11:15:23
+        .LINK
+            https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Export-WevtLog
+        .LINK
+            https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
+        .LINK
+            https://technet.microsoft.com/en-us/library/cc732848.aspx
+    #>
+ [CmdletBinding()]
+ Param
+ (
+  [Parameter(Mandatory = $true, ParameterSetName = 'export-log')]
+  [string]$LogName,
+  [Parameter(Mandatory = $false, ParameterSetName = 'export-log')]
+  [switch]$Overwrite
+ )
+ if ((Test-Path $LogName)) {
+  Invoke-Wevtutil -ExportLog -LogPath $Logname -Overwrite $Overwrite;
+ }
+ else {
+  throw "$($LogName) must be a file and path to a log file"
+ }
+}
 Function Set-WevtLog {
  <#
         .SYNOPSIS
@@ -661,125 +738,6 @@ Function Find-WevtEvent {
   }
   if ($Element) {
    $WevtUtil += "/e:$($Element) "
-  }
-  Invoke-Expression -Command $WevtUtil.Trim();
- }
- End {
- }
-}
-Function Export-WevtLog {
- <#
-        .SYNOPSIS
-            Exports events from an event log, from a log file, or using
-            a structured query to the specified file.
-        .DESCRIPTION
-            Exports events from an event log, from a log file, or using
-            a structured query to the specified file. By default, you provide
-            a log name for <Logname>. However, if you use the LogFile option, then
-            <Logname> must be a path to a log file. If you use the StructuredQuery
-            option, <Logname> must be a path to a file that contains a structured
-            query. <Exportfile> is a path to the file where the exported events
-            will be stored.
-        .PARAMETER Logname
-            The name of a log or path to a logfile/structured query file
-        .PARAMETER ExportFile
-            A path to the file where the exported events will be stored.
-        .PARAMETER LogFile
-            Specifies that the events should be read from a log or from a log
-            file. <Logfile> can be true or false. If true, the parameter to the
-            command is the path to a log file.
-        .PARAMETER StructuredQuery
-            Specifies that events should be obtained with a structured query.
-            <Structquery> can be true or false. If true, <Path> is the path to
-            a file that contains a structured query.
-        .PARAMETER Query
-            Defines the XPath query to filter the events that are read or
-            exported. If this option is not specified, all events will be
-            returned or exported. This option is not available when /sq is true.
-        .PARAMETER Overwrite
-            Specifies that the export file should be overwritten. <Overwrite>
-            can be true or false. If true, and the export file specified in
-            <Exportfile> already exists, it will be overwritten without
-            confirmation.
-        .EXAMPLE
-            Export-WevtLog -LogName Microsoft-Windows-CAPI2/Operational -ExportFile C:\temp\capi2-operational.evtx
-
-            # jspatton@IT08082 | 14:51:10 | 03-02-2015 | C:\projects\mod-posh\powershell\production #
-            Get-WevtLogInfo -LogName C:\temp\capi2-operational.evtx -LogFile
-
-            creationTime: 2015-03-02T20:51:10.530Z
-            lastAccessTime: 2015-03-02T20:51:10.530Z
-            lastWriteTime: 2015-03-02T20:51:10.655Z
-            fileSize: 1118208
-            attributes: 32
-            numberOfLogRecords: 409
-            oldestRecordNumber: 1
-
-            Description
-            -----------
-            Export the CAPI log to a file, then get information from the file using Get-WevtLogInfo
-        .NOTES
-            FunctionName : Export-WevtLog
-            Created by   : jspatton
-            Date Coded   : 03/02/2015 11:15:23
-        .LINK
-            https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Export-WevtLog
-        .LINK
-            https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
-        .LINK
-            https://technet.microsoft.com/en-us/library/cc732848.aspx
-    #>
- [CmdletBinding()]
- Param
- (
-  [Parameter(Mandatory = $true, ParameterSetName = 'export-log')]
-  [string]$LogName,
-  [Parameter(Mandatory = $true, ParameterSetName = 'export-log')]
-  [string]$ExportFile,
-  [Parameter(Mandatory = $false, ParameterSetName = 'export-log')]
-  [switch]$LogFile,
-  [Parameter(Mandatory = $false, ParameterSetName = 'export-log')]
-  [switch]$StructuredQuery,
-  [Parameter(Mandatory = $false, ParameterSetName = 'export-log')]
-  [string]$Query,
-  [Parameter(Mandatory = $false, ParameterSetName = 'export-log')]
-  [switch]$Overwrite
- )
- Begin {
-  $WevtUtil = "wevtutil $($PSCmdlet.ParameterSetName) ";
- }
- Process {
-  if ($LogFile) {
-   if ((Test-Path $LogName)) {
-    $WevtUtil += "$($LogName) /lf:$($LogFile) "
-   }
-   else {
-    throw "$($LogName) must be a file and path to a log file"
-    break;
-   }
-  }
-  else {
-   $WevtUtil += "$($LogName) "
-  }
-  if ($StructuredQuery) {
-   if ((Test-Path $LogName)) {
-    $WevtUtil += "$($LogName) /sq:$($StructuredQuery) "
-   }
-   else {
-    throw "$($LogName) must be a file and path to a structured query file"
-    break;
-   }
-  }
-  else {
-  }
-  $WevtUtil += "$($ExportFile) ";
-  if ($Query) {
-   if (!($StructuredQuery)) {
-    $WevtUtil += "/q:$($Query) "
-   }
-  }
-  if ($Overwrite) {
-   $WevtUtil += "/ow:$($Overwrite) "
   }
   Invoke-Expression -Command $WevtUtil.Trim();
  }
