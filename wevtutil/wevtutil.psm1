@@ -1,4 +1,4 @@
-Function Get-WevtLog {
+Function Get-Log {
  <#
         .SYNOPSIS
             Displays configuration information for the specified log
@@ -68,21 +68,162 @@ Function Get-WevtLog {
   [Parameter(Mandatory = $true, ParameterSetName = 'enum-logs')]
   [switch]$List
  )
- Begin {
-  $WevtUtil = {wevtutil $PSCmdlet.ParameterSetName};
- }
- Process {
-  if ($PSCmdlet.ParameterSetName -eq 'get-log') {
-   $WevtUtil += "$($Logname) "
-   if ($Format) {
-    $WevtUtil += "/f:$($Format)"
+ switch ($PSCmdlet.ParameterSetName) {
+  'get-log' {
+   if (Invoke-Wevtutil -EnumLog | Where-Object { $_ -eq $Logname }) {
+    Invoke-Wevtutil -GetLog -LogName "`"$Logname`"" -Format $Format;
    }
   }
-  if ($PSCmdlet.ParameterSetName -eq 'enum-logs') {
+  'enum-logs' {
+   Invoke-Wevtutil -EnumLog;
   }
-  Invoke-Expression -Command $WevtUtil.Trim();
  }
- end {
+}
+Function Get-LogInfo {
+ <#
+        .SYNOPSIS
+            Displays status information about an event log or log file.
+        .DESCRIPTION
+            Displays status information about an event log or log file. If the
+            LogFile option is used, <Logname> is a path to a log file. You can
+            run Get-WevtLog -List to obtain a list of log names.
+        .PARAMETER Logname
+            The name of a log or path to a logfile/structured query file
+        .PARAMETER LogFile
+            Specifies that the events should be read from a log or from a log
+            file. <Logfile> can be true or false. If true, the parameter to the
+            command is the path to a log file.
+        .EXAMPLE
+            Get-WevtLogInfo -LogName Microsoft-Windows-CAPI2/Operational
+
+            creationTime: 2015-03-02T18:08:49.513Z
+            lastAccessTime: 2015-03-02T18:08:49.513Z
+            lastWriteTime: 2015-03-02T19:57:11.003Z
+            fileSize: 1052672
+            attributes: 32
+            numberOfLogRecords: 177
+            oldestRecordNumber: 1
+
+            Description
+            -----------
+            Get the log information for the CAPI log
+        .NOTES
+            FunctionName : Get-WevtLogInfo
+            Created by   : jspatton
+            Date Coded   : 03/02/2015 10:47:25
+        .LINK
+            https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Get-WevtLogInfo
+        .LINK
+            https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
+        .LINK
+            https://technet.microsoft.com/en-us/library/cc732848.aspx
+    #>
+ [CmdletBinding()]
+ Param
+ (
+  [Parameter(Mandatory = $true, ParameterSetName = 'get-loginfo')]
+  [string]$LogName,
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-loginfo')]
+  [switch]$LogFile
+ )
+ if ($LogFile) {
+  if ((Test-Path $LogName)) {
+   Invoke-Wevtutil -GetLogInfo -LogName $LogName -LogFile $LogFile;
+  }
+  else {
+   throw "$($LogName) must be a path and filename to a logfile"
+  }
+ }
+ else {
+  Invoke-Wevtutil -GetLogInfo -LogName $LogName;
+ }
+}
+Function Get-Publisher {
+ <#
+        .SYNOPSIS
+            Displays the configuration information for the specified event publisher.
+        .DESCRIPTION
+            Displays the configuration information for the specified event publisher.
+        .PARAMETER List
+            Displays the event publishers on the local computer.
+        .PARAMETER PublisherName
+            The name of a Publisher
+        .PARAMETER Metadata
+            Gets metadata information for events that can be raised by this publisher.
+            <Metadata> can be true or false.
+        .PARAMETER Message
+            Displays the actual message instead of the numeric message ID. <Message>
+            can be true or false.
+        .PARAMETER Format
+            Specifies that the output should be either XML or text format.
+            If <Format> is XML, the output is displayed in XML format. If
+            <Format> is Text, the output is displayed without XML tags. The
+            default is Text.
+        .EXAMPLE
+            Get-WevtPublisher -List |Select-String "capi"
+
+            Microsoft-Windows-CAPI2
+            Microsoft-Windows-WMPNSS-PublicAPI
+
+            Description
+            -----------
+            Filter the list of Publishers to find just the ones related to CAPI
+        .EXAMPLE
+            Get-WevtPublisher -PublisherName Microsoft-Windows-CAPI2 -Metadata $true -Message $true -Format xml
+
+            <?xml version="1.0" encoding="UTF-8"?>
+            <provider name="Microsoft-Windows-CAPI2" guid="5bbca4a8-b209-48dc-a8c7-b23d3e5216fb" helpLink="http://go.microsoft.com/f
+            wlink/events.asp?CoName=Microsoft%20Corporation&amp;ProdName=Microsoft%c2%ae%20Windows%c2%ae%20Operating%20System&amp;Pr
+            odVer=6.3.9600.16431&amp;FileName=crypt32.dll&amp;FileVer=6.3.9600.16431" resourceFileName="C:\Windows\System32\crypt32.
+            dll" messageFileName="C:\Windows\System32\crypt32.dll" message="Microsoft-Windows-CAPI2" xmlns="http://schemas.microsoft
+            .com/win/2004/08/events">
+              <channels>
+                <channel name="Application" id="9" flags="1" message="Application">
+                </channel>
+                <channel name="Microsoft-Windows-CAPI2/Operational" id="16" flags="0" message="Microsoft-Windows-CAPI2/Operational">
+
+                </channel>
+                <channel name="Microsoft-Windows-CAPI2/Catalog Database Debug" id="17" flags="0" message="Microsoft-Windows-CAPI2/Ca
+            talog Database Debug">
+                </channel>
+              </channels>
+
+            Description
+            -----------
+            Get the configuration of the CAPI2 publisher with Metadata and Messages, in XML format.
+        .NOTES
+            FunctionName : Get-WevtPublisher
+            Created by   : jspatton
+            Date Coded   : 03/02/2015 9:24:02
+        .LINK
+            https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Get-WevtPublisher
+        .LINK
+            https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
+        .LINK
+            https://technet.microsoft.com/en-us/library/cc732848.aspx
+    #>
+ [CmdletBinding()]
+ Param
+ (
+  [Parameter(Mandatory = $true, ParameterSetName = 'enum-publishers')]
+  [switch]$List,
+  [Parameter(Mandatory = $true, ParameterSetName = 'get-publisher')]
+  [string]$PublisherName,
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-publisher')]
+  [bool]$Metadata,
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-publisher')]
+  [bool]$Message,
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-publisher')]
+  [ValidateSet("xml", "text")]
+  [string]$Format
+ )
+ switch ($PSCmdlet.ParameterSetName) {
+  'enum-publishers' {
+   Invoke-Wevtutil -EnumPublishers;
+  }
+  'get-publisher' {
+   Invoke-Wevtutil -GetPublisher -PublisherName "`"$PublisherName"`" -GetEvents $Metadata -GetMessage $Message -Format $Format;
+  }
  }
 }
 Function Set-WevtLog {
@@ -245,108 +386,6 @@ Function Set-WevtLog {
    }
    if ($Config) {
     $WevtUtil = "wevtutil /c:$($Config) "
-   }
-  }
-  Invoke-Expression -Command $WevtUtil.Trim();
- }
- End {
- }
-}
-Function Get-WevtPublisher {
- <#
-        .SYNOPSIS
-            Displays the configuration information for the specified event publisher.
-        .DESCRIPTION
-            Displays the configuration information for the specified event publisher.
-        .PARAMETER List
-            Displays the event publishers on the local computer.
-        .PARAMETER PublisherName
-            The name of a Publisher
-        .PARAMETER Metadata
-            Gets metadata information for events that can be raised by this publisher.
-            <Metadata> can be true or false.
-        .PARAMETER Message
-            Displays the actual message instead of the numeric message ID. <Message>
-            can be true or false.
-        .PARAMETER Format
-            Specifies that the output should be either XML or text format.
-            If <Format> is XML, the output is displayed in XML format. If
-            <Format> is Text, the output is displayed without XML tags. The
-            default is Text.
-        .EXAMPLE
-            Get-WevtPublisher -List |Select-String "capi"
-
-            Microsoft-Windows-CAPI2
-            Microsoft-Windows-WMPNSS-PublicAPI
-
-            Description
-            -----------
-            Filter the list of Publishers to find just the ones related to CAPI
-        .EXAMPLE
-            Get-WevtPublisher -PublisherName Microsoft-Windows-CAPI2 -Metadata $true -Message $true -Format xml
-
-            <?xml version="1.0" encoding="UTF-8"?>
-            <provider name="Microsoft-Windows-CAPI2" guid="5bbca4a8-b209-48dc-a8c7-b23d3e5216fb" helpLink="http://go.microsoft.com/f
-            wlink/events.asp?CoName=Microsoft%20Corporation&amp;ProdName=Microsoft%c2%ae%20Windows%c2%ae%20Operating%20System&amp;Pr
-            odVer=6.3.9600.16431&amp;FileName=crypt32.dll&amp;FileVer=6.3.9600.16431" resourceFileName="C:\Windows\System32\crypt32.
-            dll" messageFileName="C:\Windows\System32\crypt32.dll" message="Microsoft-Windows-CAPI2" xmlns="http://schemas.microsoft
-            .com/win/2004/08/events">
-              <channels>
-                <channel name="Application" id="9" flags="1" message="Application">
-                </channel>
-                <channel name="Microsoft-Windows-CAPI2/Operational" id="16" flags="0" message="Microsoft-Windows-CAPI2/Operational">
-
-                </channel>
-                <channel name="Microsoft-Windows-CAPI2/Catalog Database Debug" id="17" flags="0" message="Microsoft-Windows-CAPI2/Ca
-            talog Database Debug">
-                </channel>
-              </channels>
-
-            Description
-            -----------
-            Get the configuration of the CAPI2 publisher with Metadata and Messages, in XML format.
-        .NOTES
-            FunctionName : Get-WevtPublisher
-            Created by   : jspatton
-            Date Coded   : 03/02/2015 9:24:02
-        .LINK
-            https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Get-WevtPublisher
-        .LINK
-            https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
-        .LINK
-            https://technet.microsoft.com/en-us/library/cc732848.aspx
-    #>
- [CmdletBinding()]
- Param
- (
-  [Parameter(Mandatory = $true, ParameterSetName = 'enum-publishers')]
-  [switch]$List,
-  [Parameter(Mandatory = $true, ParameterSetName = 'get-publisher')]
-  [string]$PublisherName,
-  [Parameter(Mandatory = $false, ParameterSetName = 'get-publisher')]
-  [bool]$Metadata,
-  [Parameter(Mandatory = $false, ParameterSetName = 'get-publisher')]
-  [bool]$Message,
-  [Parameter(Mandatory = $false, ParameterSetName = 'get-publisher')]
-  [ValidateSet("xml", "text")]
-  [string]$Format
- )
- Begin {
-  $WevtUtil = "wevtutil $($PSCmdlet.ParameterSetName) ";
- }
- Process {
-  if ($PSCmdlet.ParameterSetName -eq "enum-publishers") {
-  }
-  if ($PSCmdlet.ParameterSetName -eq "get-publisher") {
-   $WevtUtil += "$($PublisherName) "
-   if ($Metadata) {
-    $WevtUtil += "/ge:$($Metadata) "
-   }
-   if ($Message) {
-    $WevtUtil += "/gm:$($Message) "
-   }
-   if ($Format) {
-    $WevtUtil += "/f:$($Format) "
    }
   }
   Invoke-Expression -Command $WevtUtil.Trim();
@@ -628,73 +667,6 @@ Function Find-WevtEvent {
  End {
  }
 }
-Function Get-WevtLogInfo {
- <#
-        .SYNOPSIS
-            Displays status information about an event log or log file.
-        .DESCRIPTION
-            Displays status information about an event log or log file. If the
-            LogFile option is used, <Logname> is a path to a log file. You can
-            run Get-WevtLog -List to obtain a list of log names.
-        .PARAMETER Logname
-            The name of a log or path to a logfile/structured query file
-        .PARAMETER LogFile
-            Specifies that the events should be read from a log or from a log
-            file. <Logfile> can be true or false. If true, the parameter to the
-            command is the path to a log file.
-        .EXAMPLE
-            Get-WevtLogInfo -LogName Microsoft-Windows-CAPI2/Operational
-
-            creationTime: 2015-03-02T18:08:49.513Z
-            lastAccessTime: 2015-03-02T18:08:49.513Z
-            lastWriteTime: 2015-03-02T19:57:11.003Z
-            fileSize: 1052672
-            attributes: 32
-            numberOfLogRecords: 177
-            oldestRecordNumber: 1
-
-            Description
-            -----------
-            Get the log information for the CAPI log
-        .NOTES
-            FunctionName : Get-WevtLogInfo
-            Created by   : jspatton
-            Date Coded   : 03/02/2015 10:47:25
-        .LINK
-            https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Get-WevtLogInfo
-        .LINK
-            https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
-        .LINK
-            https://technet.microsoft.com/en-us/library/cc732848.aspx
-    #>
- [CmdletBinding()]
- Param
- (
-  [Parameter(Mandatory = $true, ParameterSetName = 'get-loginfo')]
-  [string]$LogName,
-  [Parameter(Mandatory = $false, ParameterSetName = 'get-loginfo')]
-  [switch]$LogFile
- )
- Begin {
-  $WevtUtil = "wevtutil $($PSCmdlet.ParameterSetName) ";
- }
- Process {
-  if ($LogFile) {
-   if ((Test-Path $LogName)) {
-    $WevtUtil += "$($LogName) /lf:$($LogFile)"
-   }
-   else {
-    throw "$($LogName) must be a path and filename to a logfile"
-   }
-  }
-  else {
-   $WevtUtil += "$($LogName) ";
-  }
-  Invoke-Expression -Command $WevtUtil;
- }
- End {
- }
-}
 Function Export-WevtLog {
  <#
         .SYNOPSIS
@@ -951,7 +923,7 @@ function Invoke-Wevtutil {
   [Parameter(Mandatory = $true, ParameterSetName = 'get-log')]
   [Parameter(Mandatory = $true, ParameterSetName = 'get-publisher')]
   [Parameter(Mandatory = $true, ParameterSetName = 'query-events')]
-  [ValidateSet("XML","Text")]
+  [ValidateSet("XML", "Text")]
   [string]$Format,
   [Parameter(Mandatory = $true, ParameterSetName = 'clear-log')]
   [Parameter(Mandatory = $true, ParameterSetName = 'archive-log')]
@@ -970,6 +942,7 @@ function Invoke-Wevtutil {
   [Parameter(Mandatory = $false, ParameterSetName = 'install-manifest')]
   [string]$ParameterPath,
   [Parameter(Mandatory = $true, ParameterSetName = 'query-events')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-loginfo')]
   [bool]$LogFile,
   [Parameter(Mandatory = $true, ParameterSetName = 'query-events')]
   [bool]$QueryFile,
@@ -990,7 +963,7 @@ function Invoke-Wevtutil {
   [Parameter(Mandatory = $true, ParameterSetName = 'set-log')]
   [int]$FileMax,
   [Parameter(Mandatory = $true, ParameterSetName = 'set-log')]
-  [ValidateSet("system","application","custom")]
+  [ValidateSet("system", "application", "custom")]
   [string]$Isolation,
   [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
   [bool]$Retention,
@@ -1039,7 +1012,7 @@ function Invoke-Wevtutil {
   [Parameter(Mandatory = $false, ParameterSetName = 'export-log')]
   [Parameter(Mandatory = $false, ParameterSetName = 'query-events')]
   [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
-  [ValidateSet("Default","Negotiate","Kerberos","NTLM")]
+  [ValidateSet("Default", "Negotiate", "Kerberos", "NTLM")]
   [string]$Authentication,
   [Parameter(Mandatory = $false, ParameterSetName = 'enum-logs')]
   [Parameter(Mandatory = $false, ParameterSetName = 'get-log')]
@@ -1068,7 +1041,7 @@ function Invoke-Wevtutil {
    $wevtUtil += " $($PublisherName) /ge:$($GetEvents) /gm:$($GetMessage) /f:$($Format)";
   }
   'get-loginfo' {
-   $wevtUtil += " $($LogName)";
+   $wevtUtil += " $($LogName) /lf:$($LogFile)";
   }
   'clear-log' {
    $wevtUtil += " $($LogName) /bu:$($LogPath)";
