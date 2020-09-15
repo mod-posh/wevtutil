@@ -135,7 +135,9 @@ Function Get-LogInfo {
   }
  }
  else {
-  Invoke-Wevtutil -GetLogInfo -LogName $LogName;
+  if (Invoke-Wevtutil -EnumLog | Where-Object { $_ -eq $Logname }) {
+   Invoke-Wevtutil -GetLogInfo -LogName $LogName;
+  }
  }
 }
 Function Get-Publisher {
