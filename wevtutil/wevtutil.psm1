@@ -1145,6 +1145,5 @@ function Invoke-Wevtutil {
   $wevtUtil += " /r:$($ComputerName) /u:$($Credential.UserName) /p:$($Credential.GetNetworkCredential().Password) /a:$($Authentication)";
  }
  $wevtUtil += " /uni:$($Unicode)";
- Write-Output $wevtUtil;
- #Invoke-Expression $wevtUtil;
+ Invoke-Expression $wevtUtil;
 }
