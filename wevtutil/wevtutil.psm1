@@ -69,7 +69,7 @@ Function Get-WevtLog {
   [switch]$List
  )
  Begin {
-  $WevtUtil = "wevtutil $($PSCmdlet.ParameterSetName) ";
+  $WevtUtil = {wevtutil $PSCmdlet.ParameterSetName};
  }
  Process {
   if ($PSCmdlet.ParameterSetName -eq 'get-log') {
@@ -907,5 +907,244 @@ Function Clear-WevtLog {
  End {
  }
 }
-
 Export-ModuleMember *
+
+function Invoke-Wevtutil {
+ param (
+  [Parameter(Mandatory = $false, ParameterSetName = 'enum-logs')]
+  [switch]$EnumLog,
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-log')]
+  [switch]$GetLog,
+  [Parameter(Mandatory = $false, ParameterSetName = 'enum-publishers')]
+  [switch]$EnumPublishers,
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-publisher')]
+  [switch]$GetPublisher,
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-loginfo')]
+  [switch]$GetLogInfo,
+  [Parameter(Mandatory = $false, ParameterSetName = 'clear-log')]
+  [switch]$ClearLog,
+  [Parameter(Mandatory = $false, ParameterSetName = 'archive-log')]
+  [switch]$ArchiveLog,
+  [Parameter(Mandatory = $false, ParameterSetName = 'export-log')]
+  [switch]$ExportLog,
+  [Parameter(Mandatory = $false, ParameterSetName = 'install-manifest')]
+  [switch]$InstallManifest,
+  [Parameter(Mandatory = $false, ParameterSetName = 'uninstall-manifest')]
+  [switch]$UninstallManifest,
+  [Parameter(Mandatory = $false, ParameterSetName = 'query-events')]
+  [switch]$QueryEvents,
+  [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+  [switch]$SetLog,
+
+  [Parameter(Mandatory = $true, ParameterSetName = 'get-log')]
+  [Parameter(Mandatory = $true, ParameterSetName = 'get-loginfo')]
+  [Parameter(Mandatory = $true, ParameterSetName = 'clear-log')]
+  [Parameter(Mandatory = $true, ParameterSetName = 'query-events')]
+  [Parameter(Mandatory = $true, ParameterSetName = 'set-log')]
+  [string]$LogName,
+  [Parameter(Mandatory = $true, ParameterSetName = 'get-publisher')]
+  [string]$PublisherName,
+  [Parameter(Mandatory = $true, ParameterSetName = 'get-publisher')]
+  [bool]$GetEvents,
+  [Parameter(Mandatory = $true, ParameterSetName = 'get-publisher')]
+  [bool]$GetMessage,
+  [Parameter(Mandatory = $true, ParameterSetName = 'get-log')]
+  [Parameter(Mandatory = $true, ParameterSetName = 'get-publisher')]
+  [Parameter(Mandatory = $true, ParameterSetName = 'query-events')]
+  [ValidateSet("XML","Text")]
+  [string]$Format,
+  [Parameter(Mandatory = $true, ParameterSetName = 'clear-log')]
+  [Parameter(Mandatory = $true, ParameterSetName = 'archive-log')]
+  [Parameter(Mandatory = $true, ParameterSetName = 'export-log')]
+  [Parameter(Mandatory = $true, ParameterSetName = 'set-log')]
+  [string]$LogPath,
+  [Parameter(Mandatory = $true, ParameterSetName = 'export-log')]
+  [bool]$Overwrite,
+  [Parameter(Mandatory = $true, ParameterSetName = 'install-manifest')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'uninstall-manifest')]
+  [string]$Manifest,
+  [Parameter(Mandatory = $false, ParameterSetName = 'install-manifest')]
+  [string]$ResourcePath,
+  [Parameter(Mandatory = $false, ParameterSetName = 'install-manifest')]
+  [string]$MessagePath,
+  [Parameter(Mandatory = $false, ParameterSetName = 'install-manifest')]
+  [string]$ParameterPath,
+  [Parameter(Mandatory = $true, ParameterSetName = 'query-events')]
+  [bool]$LogFile,
+  [Parameter(Mandatory = $true, ParameterSetName = 'query-events')]
+  [bool]$QueryFile,
+  [Parameter(Mandatory = $false, ParameterSetName = 'query-events')]
+  [string]$Query,
+  [Parameter(Mandatory = $false, ParameterSetName = 'query-events')]
+  [string]$BookMark,
+  [Parameter(Mandatory = $false, ParameterSetName = 'query-events')]
+  [string]$SaveBookMark,
+  [Parameter(Mandatory = $false, ParameterSetName = 'query-events')]
+  [bool]$Reverse,
+  [Parameter(Mandatory = $false, ParameterSetName = 'query-events')]
+  [int]$Count,
+  [Parameter(Mandatory = $true, ParameterSetName = 'set-log')]
+  [bool]$Enabled,
+  [Parameter(Mandatory = $true, ParameterSetName = 'set-log')]
+  [bool]$Queit,
+  [Parameter(Mandatory = $true, ParameterSetName = 'set-log')]
+  [int]$FileMax,
+  [Parameter(Mandatory = $true, ParameterSetName = 'set-log')]
+  [ValidateSet("system","application","custom")]
+  [string]$Isolation,
+  [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+  [bool]$Retention,
+  [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+  [bool]$AutoBackup,
+  [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+  [int]$MaxSize,
+  [Parameter(Mandatory = $true, ParameterSetName = 'set-log')]
+  [int]$Level,
+  [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+  [string]$Keywords,
+  [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+  [string]$ChannelAccess,
+  [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+  [string]$Config,
+
+  [Parameter(Mandatory = $false, ParameterSetName = 'enum-logs')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'enum-publishers')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-publisher')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-loginfo')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'clear-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'archive-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'export-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'query-events')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+  [string]$ComputerName,
+  [Parameter(Mandatory = $false, ParameterSetName = 'enum-logs')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'enum-publishers')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-publisher')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-loginfo')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'clear-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'archive-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'export-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'query-events')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+  [pscredential]$Credential,
+  [Parameter(Mandatory = $false, ParameterSetName = 'enum-logs')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'enum-publishers')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-publisher')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-loginfo')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'clear-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'archive-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'export-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'query-events')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+  [ValidateSet("Default","Negotiate","Kerberos","NTLM")]
+  [string]$Authentication,
+  [Parameter(Mandatory = $false, ParameterSetName = 'enum-logs')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'enum-publishers')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-publisher')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'get-loginfo')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'clear-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'archive-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'export-log')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'install-manifest')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'uninstall-manifest')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'query-events')]
+  [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+  [bool]$Unicode
+ )
+ $wevtUtil = "wevtutil $($PSCmdlet.ParameterSetName)";
+ switch ($PSCmdlet.ParameterSetName) {
+  'enum-logs' {
+  }
+  'get-log' {
+   $wevtUtil += " $($LogName) /f:$($Format)";
+  }
+  'enum-publishers' {
+  }
+  'get-publisher' {
+   $wevtUtil += " $($PublisherName) /ge:$($GetEvents) /gm:$($GetMessage) /f:$($Format)";
+  }
+  'get-loginfo' {
+   $wevtUtil += " $($LogName)";
+  }
+  'clear-log' {
+   $wevtUtil += " $($LogName) /bu:$($LogPath)";
+  }
+  'archive-log' {
+   $wevtUtil += " $($LogPath)";
+  }
+  'export-log' {
+   $wevtUtil += " $($LogPath) /lf:True /ow:$($OverWrite)";
+  }
+  'install-manifest' {
+   $wevtUtil += " $($Manifest)";
+   if ($ResourcePath) {
+    $wevtUtil += " /rf:$($ResourcePath)";
+   }
+   if ($MessagePath) {
+    $wevtUtil += " /mf:$($MessagePath)";
+   }
+   if ($ParameterPath) {
+    $wevtUtil += " /pf:$($ParameterPath)";
+   }
+  }
+  'uninstall-manifest' {
+   $wevtUtil += " $($Manifest)";
+  }
+  'query-events' {
+   $wevtUtil += " $($LogName) /lf:$($LogFile) /sq:$($QueryFile)";
+   if (!($QueryFile)) {
+    if ($Query) {
+     $wevtUtil += " /q:$($Query)";
+    }
+   }
+   if ($BookMark) {
+    $wevtUtil += " /bm:$($BookMark)";
+   }
+   if ($SaveBookMark) {
+    $wevtUtil += " /sbm:$($SaveBookMark)";
+   }
+   $wevtUtil += " /rd:$($Reverse) /f:$($Format)";
+   if ($Count) {
+    $wevtUtil += " /c:$($Count)";
+   }
+  }
+  'set-log' {
+   if ($Config) {
+    $wevtUtil += " $($Config)";
+   } else {
+    $wevtUtil += " $($LogName) /e:$($Enabled) /q:$($Quiet)";
+    if ($FileMax) {
+     $wevtUtil += " /fm:$($FileMax)";
+    }
+    if ($AutoBackup) {
+     $wevtUtil += " /rt:True /ab:$($AutoBackup)";
+    }
+    if ($Retention) {
+     $wevtUtil += " /rt:$($Retention)";
+    }
+    if ($MaxSize) {
+     $wevtUtil += " /ms:$($MaxSize)";
+    }
+    if ($Level) {
+     $wevtUtil += " /l:$($Level)";
+    }
+    if ($Keywords) {
+     $wevtUtil += " /k:$($Keywords)";
+    }
+    if ($ChannelAccess) {
+     $wevtUtil += " /ca:$($ChannelAccess)";
+    }
+   }
+  }
+ }
+ if ($ComputerName) {
+  $wevtUtil += " /r:$($ComputerName) /u:$($Credential.UserName) /p:$($Credential.GetNetworkCredential().Password) /a:$($Authentication)";
+ }
+ $wevtUtil += " /uni:$($Unicode)";
+ Write-Output $wevtUtil;
+ #Invoke-Expression $wevtUtil;
+}
