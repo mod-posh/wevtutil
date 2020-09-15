@@ -300,11 +300,11 @@ Function Export-Log {
   [Parameter(Mandatory = $false, ParameterSetName = 'export-log')]
   [switch]$Overwrite
  )
- if ((Test-Path $LogName)) {
+ if ((Test-Path $LogPath)) {
   Invoke-Wevtutil -ExportLog -LogPath $LogPath -Overwrite $Overwrite;
  }
  else {
-  throw "$($LogName) must be a file and path to a log file"
+  throw "$($LogPath) must be a file and path to a log file"
  }
 }
 Function Save-Log {
