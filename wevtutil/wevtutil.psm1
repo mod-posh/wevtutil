@@ -224,7 +224,9 @@ Function Get-Publisher {
    Invoke-Wevtutil -EnumPublishers;
   }
   'get-publisher' {
-   Invoke-Wevtutil -GetPublisher -PublisherName "`"$PublisherName"`" -GetEvents $Metadata -GetMessage $Message -Format $Format;
+   if (Invoke-Wevtutil -EnumPublishers | Where-Object { $_ -eq $PublisherName }) {
+    Invoke-Wevtutil -GetPublisher -PublisherName "`"$PublisherName"`" -GetEvents $Metadata -GetMessage $Message -Format $Format;
+   }
   }
  }
 }
@@ -294,12 +296,12 @@ Function Export-Log {
  Param
  (
   [Parameter(Mandatory = $true, ParameterSetName = 'export-log')]
-  [string]$LogName,
+  [string]$LogPath,
   [Parameter(Mandatory = $false, ParameterSetName = 'export-log')]
   [switch]$Overwrite
  )
  if ((Test-Path $LogName)) {
-  Invoke-Wevtutil -ExportLog -LogPath $Logname -Overwrite $Overwrite;
+  Invoke-Wevtutil -ExportLog -LogPath $LogPath -Overwrite $Overwrite;
  }
  else {
   throw "$($LogName) must be a file and path to a log file"
@@ -1035,7 +1037,8 @@ function Invoke-Wevtutil {
   'set-log' {
    if ($Config) {
     $wevtUtil += " $($Config)";
-   } else {
+   }
+   else {
     $wevtUtil += " $($LogName) /e:$($Enabled) /q:$($Quiet)";
     if ($FileMax) {
      $wevtUtil += " /fm:$($FileMax)";
