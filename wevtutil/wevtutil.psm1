@@ -88,31 +88,7 @@ Function Export-Log {
   }
 }
 Function Save-Log {
-  <#
-  .SYNOPSIS
-  Archives the specified log file in a self-contained format.
-  .DESCRIPTION
-  Archives the specified log file in a self-contained format. A
-  subdirectory with the name of the locale is created and all locale-
-  specific information is saved in that subdirectory. After the
-  directory and log file are created by running Save-WevtLog, events
-  in the file can be read whether the publisher is installed or not.
-  .PARAMETER LogPath
-  Defines the log file name. <Logpath> is a full path to the file
-  where the Event Log service stores events for this log.
-  .EXAMPLE
-  .NOTES
-  FunctionName : Save-WevtLog
-  Created by   : jspatton
-  Date Coded   : 03/02/2015 11:20:23
-  .LINK
-  https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Save-WevtLog
-  .LINK
-  https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
-  .LINK
-  https://technet.microsoft.com/en-us/library/cc732848.aspx
-  #>
-  [CmdletBinding()]
+  [CmdletBinding(HelpURI = 'https://github.com/mod-posh/wevtutil/blob/master/docs/Save-Log.md#save-log')]
   Param
   (
     [Parameter(Mandatory = $true, ParameterSetName = 'archive-log')]
@@ -244,12 +220,6 @@ Function Find-Event {
     [Parameter(Mandatory = $false, ParameterSetName = 'QueryFile')]
     [string]$Count
   )
-  <#
-  [Parameter(Mandatory = $false, ParameterSetName = 'query-events')]
-  [string]$BookMark,
-  [Parameter(Mandatory = $false, ParameterSetName = 'query-events')]
-  [string]$SaveBookMark,
-#>
   $Params = @{};
   if ($Format) {
     $Params.Add('Format', $Format);
