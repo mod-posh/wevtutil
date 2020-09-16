@@ -231,54 +231,7 @@ Function Get-Publisher {
   }
 }
 Function Export-Log {
-  <#
-  .SYNOPSIS
-  Exports events from an event log, from a log file, or using
-  a structured query to the specified file.
-  .DESCRIPTION
-  Exports events from an event log, from a log file, or using
-  a structured query to the specified file. By default, you provide
-  a log name for <Logname>. However, if you use the LogFile option, then
-  <Logname> must be a path to a log file. If you use the StructuredQuery
-  option, <Logname> must be a path to a file that contains a structured
-  query. <Exportfile> is a path to the file where the exported events
-  will be stored.
-  .PARAMETER LogPath
-  A path to the file where the exported events will be stored.
-  .PARAMETER Overwrite
-  Specifies that the export file should be overwritten. <Overwrite>
-  can be true or false. If true, and the export file specified in
-  <Exportfile> already exists, it will be overwritten without
-  confirmation.
-  .EXAMPLE
-  Export-WevtLog -LogName Microsoft-Windows-CAPI2/Operational -ExportFile C:\temp\capi2-operational.evtx
-
-  # jspatton@IT08082 | 14:51:10 | 03-02-2015 | C:\projects\mod-posh\powershell\production #
-  Get-WevtLogInfo -LogName C:\temp\capi2-operational.evtx -LogFile
-
-  creationTime: 2015-03-02T20:51:10.530Z
-  lastAccessTime: 2015-03-02T20:51:10.530Z
-  lastWriteTime: 2015-03-02T20:51:10.655Z
-  fileSize: 1118208
-  attributes: 32
-  numberOfLogRecords: 409
-  oldestRecordNumber: 1
-
-  Description
-  -----------
-  Export the CAPI log to a file, then get information from the file using Get-WevtLogInfo
-  .NOTES
-  FunctionName : Export-WevtLog
-  Created by   : jspatton
-  Date Coded   : 03/02/2015 11:15:23
-  .LINK
-  https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Export-WevtLog
-  .LINK
-  https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
-  .LINK
-  https://technet.microsoft.com/en-us/library/cc732848.aspx
-  #>
-  [CmdletBinding()]
+  [CmdletBinding(HelpURI = 'https://github.com/mod-posh/wevtutil/blob/master/docs/Export-Log.md#export-log')]
   Param
   (
     [Parameter(Mandatory = $true, ParameterSetName = 'export-log')]
