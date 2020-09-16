@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 - Update module for current PowerShell
 
+## [1.0.0.0] - 2020-09-16
+
+### Updated
+- Issue #3 Added ShouldProcess for Set-Log
+- Issue #6 Updated Comment-based Help
+- Issue #7 Created External Help
+
 ## [1.0.0.0] - 2020-09-15
 ### Added
 - Created wevtutil repository in mod-posh Organization
