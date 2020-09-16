@@ -658,7 +658,7 @@ Function Find-Event {
   }
   Invoke-Wevtutil -QueryEvents @Params;
 }
-Function Set-WevtLog {
+Function Set-Log {
   <#
   .SYNOPSIS
   Modifies the configuration of the specified log.
@@ -758,10 +758,12 @@ Function Set-WevtLog {
     [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
     [string]$Enabled,
     [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+    [bool]$Quiet,
+    [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
     [ValidateSet("system", "application", "custom")]
     [string]$Isolation,
     [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
-    [string]$Logpath,
+    [System.IO.FileInfo]$Logpath,
     [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
     [bool]$Retention,
     [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
@@ -775,58 +777,67 @@ Function Set-WevtLog {
     [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
     [string]$Channel,
     [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
-    [string]$Config
+    [System.IO.FileInfo]$Config
   )
-  Begin {
-    $WevtUtil = "wevtutil $($PSCmdlet.ParameterSetName) $($Logname) ";
-  }
-  Process {
-    if ($PSCmdlet.ParameterSetName -eq 'set-log') {
-      if ($Enabled) {
-        if (($Enabled.ToString() -eq "False") -or ($Enabled.ToString() -eq "True")) {
-          $WevtUtil += "/e:$($Enabled) "
-        }
-      }
-      if ($Isolation) {
-        $WevtUtil += "/i:$($Isolation) "
-      }
-      if ($Logpath) {
-        $WevtUtil += "/lfn:$($Logpath) "
-      }
-      if ($Retention) {
-        $WevtUtil += "/rt:$($Retention) /ab:$($AutoBackup) "
-      }
-      else {
-        if ($AutoBackup) {
-          $WevtUtil += "/rt:$($true) /ab:$($AutoBackup) "
-        }
-        else {
-          $WevtUtil += "/rt:$($Retention) /ab:$($AutoBackup) "
-        }
-      }
-      if ($Size) {
-        $WevtUtil += "/ms:$($Size) "
-      }
-      if ($Level) {
-        $WevtUtil += "/l:$($Level) "
-      }
-      if ($Keywords) {
-        $WevtUtil += "/k:$($Keywords) "
-      }
-      if ($Channel) {
-        $WevtUtil += "/ca:$($Channel) "
-      }
-      if ($Config) {
-        $WevtUtil = "wevtutil /c:$($Config) "
+  <#
+    [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+    [string]$Keywords,
+    [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+    [string]$ChannelAccess,
+    [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
+    [string]$Config,
+  #>
+  $Params = @{};
+  if ($Config) {
+    if ($Config.Exists -and $Config.Extension -eq '.xml') {
+      $Params.Add('Config',$Config);
+    }
+  } else {
+    if ($Enabled) {
+      $Params.Add('Enabled',$Enabled);
+    }
+    if ($Quiet) {
+      $Params.Add('Quiet',$Quiet);
+    }
+    if ($MaxSize) {
+      #
+      # check between 1 and 16
+      #
+      $Params.Add('FileMax',$MaxSize);
+    }
+    if ($Isolation) {
+      $Params.Add('Isolation',$Isolation);
+    }
+    if ($Logpath) {
+      if ($Logpath.Exists) {
+        $Params.Add('LogPath',$Logpath);
       }
     }
-    Invoke-Expression -Command $WevtUtil.Trim();
+    if ($Retention) {
+      $Params.Add('Retention',$Retention);
+    }
+    if ($AutoBackup) {
+      $Params.Add('AutoBackup',$AutoBackup);
+    }
+    if ($Size) {
+      #
+      # check divisible by 64
+      # min is 1024*1024
+      #
+      $Params.Add('MaxSize',$Size);
+    }
+    if ($Level) {
+      $Params.Add('Level',$Level);
+    }
+    if ($Keywords) {
+      $Params.Add('Keywords',$Keywords);
+    }
+    if ($Channel) {
+      $Params.Add('ChannelAccess',$Channel);
+    }
   }
-  End {
-  }
+  Invoke-Wevtutil -SetLog @Params;
 }
-Export-ModuleMember *
-
 function Invoke-Wevtutil {
   param (
     [Parameter(Mandatory = $false, ParameterSetName = 'enum-logs')]
@@ -905,7 +916,7 @@ function Invoke-Wevtutil {
     [Parameter(Mandatory = $true, ParameterSetName = 'set-log')]
     [bool]$Enabled,
     [Parameter(Mandatory = $true, ParameterSetName = 'set-log')]
-    [bool]$Queit,
+    [bool]$Quiet,
     [Parameter(Mandatory = $true, ParameterSetName = 'set-log')]
     [int]$FileMax,
     [Parameter(Mandatory = $true, ParameterSetName = 'set-log')]
