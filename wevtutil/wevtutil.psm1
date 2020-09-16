@@ -387,6 +387,63 @@ Function Clear-Log {
   }
  }
 }
+Function Install-Manifest {
+ <#
+        .SYNOPSIS
+            Installs event publishers and logs from a manifest.
+        .DESCRIPTION
+            Installs event publishers and logs from a manifest. For more
+            information about event manifests and using this parameter, see
+            the Windows Event Log SDK at the Microsoft Developers Network
+            (MSDN) Web site (http://msdn.microsoft.com).
+        .PARAMETER Manifest
+            This is a valid XML file containing the Manifest, see MSDN for
+            more details.
+            https://msdn.microsoft.com/en-us/library/windows/desktop/dd996930(v=vs.85).aspx
+        .EXAMPLE
+            Install-WevtManifest -Manifest C:\Temp\Sample-Manifest.man
+
+            Description
+            -----------
+            Installs the Sample-Manifest as a publisher
+        .NOTES
+            FunctionName : Install-WevtManifest
+            Created by   : jspatton
+            Date Coded   : 03/02/2015 10:26:34
+        .LINK
+            https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Install-WevtManifest
+        .LINK
+            https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
+        .LINK
+            https://technet.microsoft.com/en-us/library/cc732848.aspx
+    #>
+ [CmdletBinding()]
+ Param
+ (
+  [Parameter(Mandatory = $true, ParameterSetName = 'install-manifest')]
+  [System.IO.FileInfo]$Manifest,
+  [Parameter(Mandatory = $false, ParameterSetName = 'install-manifest')]
+  [System.IO.FileInfo]$ResourcePath,
+  [Parameter(Mandatory = $false, ParameterSetName = 'install-manifest')]
+  [System.IO.FileInfo]$MessagePath,
+  [Parameter(Mandatory = $false, ParameterSetName = 'install-manifest')]
+  [System.IO.FileInfo]$ParameterPath
+ )
+ $Params = @{};
+ if ($Manifest.Exists) {
+  $Params.Add('Manifest',$Manifest.FullName);
+ }
+ if ($ResourcePath.Exists) {
+  $Params.Add('ResourcePath',$ResourcePath.FullName);
+ }
+ if ($MessagePath.Exists) {
+  $Params.Add('MessagePath',$MessagePath.FullName);
+ }
+ if ($ParameterPath.Exists) {
+  $Params.Add('ParameterPath',$ParameterPath.FullName);
+ }
+ Invoke-Wevtutil -InstallManifest @Params;
+}
 Function Set-WevtLog {
  <#
         .SYNOPSIS
@@ -550,51 +607,6 @@ Function Set-WevtLog {
    }
   }
   Invoke-Expression -Command $WevtUtil.Trim();
- }
- End {
- }
-}
-Function Install-WevtManifest {
- <#
-        .SYNOPSIS
-            Installs event publishers and logs from a manifest.
-        .DESCRIPTION
-            Installs event publishers and logs from a manifest. For more
-            information about event manifests and using this parameter, see
-            the Windows Event Log SDK at the Microsoft Developers Network
-            (MSDN) Web site (http://msdn.microsoft.com).
-        .PARAMETER Manifest
-            This is a valid XML file containing the Manifest, see MSDN for
-            more details.
-            https://msdn.microsoft.com/en-us/library/windows/desktop/dd996930(v=vs.85).aspx
-        .EXAMPLE
-            Install-WevtManifest -Manifest C:\Temp\Sample-Manifest.man
-
-            Description
-            -----------
-            Installs the Sample-Manifest as a publisher
-        .NOTES
-            FunctionName : Install-WevtManifest
-            Created by   : jspatton
-            Date Coded   : 03/02/2015 10:26:34
-        .LINK
-            https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Install-WevtManifest
-        .LINK
-            https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
-        .LINK
-            https://technet.microsoft.com/en-us/library/cc732848.aspx
-    #>
- [CmdletBinding()]
- Param
- (
-  [Parameter(Mandatory = $true, ParameterSetName = 'install-manifest')]
-  $Manifest
- )
- Begin {
-  $WevtUtil = "wevtutil $($PSCmdlet.ParameterSetName) $($Manifest)"
- }
- Process {
-  Invoke-Expression $WevtUtil;
  }
  End {
  }
