@@ -444,6 +444,46 @@ Function Install-Manifest {
  }
  Invoke-Wevtutil -InstallManifest @Params;
 }
+Function Uninstall-Manifest {
+ <#
+        .SYNOPSIS
+            Uninstalls all publishers and logs from a manifest.
+        .DESCRIPTION
+            Uninstalls all publishers and logs from a manifest. For more
+            information about event manifests and using this parameter, see
+            the Windows Event Log SDK at the Microsoft Developers Network
+            (MSDN) Web site (http://msdn.microsoft.com).
+        .PARAMETER Manifest
+            This is a valid XML file containing the Manifest, see MSDN for
+            more details.
+            https://msdn.microsoft.com/en-us/library/windows/desktop/dd996930(v=vs.85).aspx
+        .EXAMPLE
+            Uninstall-WevtManifest -Manifest C:\Temp\Sample-Manifest.man
+
+            Description
+            -----------
+            Uninstalls the Sample-Manifest as a publisher
+        .NOTES
+            FunctionName : Uninstall-WevtManifest
+            Created by   : jspatton
+            Date Coded   : 03/02/2015 10:30:24
+        .LINK
+            https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Uninstall-WevtManifest
+        .LINK
+            https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
+        .LINK
+            https://technet.microsoft.com/en-us/library/cc732848.aspx
+    #>
+ [CmdletBinding()]
+ Param
+ (
+  [Parameter(Mandatory = $true, ParameterSetName = 'uninstall-manifest')]
+  [System.IO.FileInfo]$Manifest
+ )
+ if ($Manifest.Exists) {
+  Invoke-Wevtutil -UninstallManifest -Manifest $Manifest.FullName;
+ }
+}
 Function Set-WevtLog {
  <#
         .SYNOPSIS
@@ -607,50 +647,6 @@ Function Set-WevtLog {
    }
   }
   Invoke-Expression -Command $WevtUtil.Trim();
- }
- End {
- }
-}
-Function Uninstall-WevtManifest {
- <#
-        .SYNOPSIS
-            Uninstalls all publishers and logs from a manifest.
-        .DESCRIPTION
-            Uninstalls all publishers and logs from a manifest. For more
-            information about event manifests and using this parameter, see
-            the Windows Event Log SDK at the Microsoft Developers Network
-            (MSDN) Web site (http://msdn.microsoft.com).
-        .PARAMETER Manifest
-            This is a valid XML file containing the Manifest, see MSDN for
-            more details.
-            https://msdn.microsoft.com/en-us/library/windows/desktop/dd996930(v=vs.85).aspx
-        .EXAMPLE
-            Uninstall-WevtManifest -Manifest C:\Temp\Sample-Manifest.man
-
-            Description
-            -----------
-            Uninstalls the Sample-Manifest as a publisher
-        .NOTES
-            FunctionName : Uninstall-WevtManifest
-            Created by   : jspatton
-            Date Coded   : 03/02/2015 10:30:24
-        .LINK
-            https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Uninstall-WevtManifest
-        .LINK
-            https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
-        .LINK
-            https://technet.microsoft.com/en-us/library/cc732848.aspx
-    #>
- [CmdletBinding()]
- Param
- (
-  [Parameter(Mandatory = $true, ParameterSetName = 'uninstall-manifest')]
-  $Manifest
- )
- Begin {
-  $WevtUtil = "wevtutil $($PSCmdlet.ParameterSetName) $($Manifest)"
- }
- Process {
  }
  End {
  }
