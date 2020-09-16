@@ -296,15 +296,15 @@ Function Export-Log {
  Param
  (
   [Parameter(Mandatory = $true, ParameterSetName = 'export-log')]
-  [string]$LogPath,
+  [System.IO.FileInfo]$LogPath,
   [Parameter(Mandatory = $false, ParameterSetName = 'export-log')]
   [switch]$Overwrite
  )
- if ((Test-Path $LogPath)) {
-  Invoke-Wevtutil -ExportLog -LogPath $LogPath -Overwrite $Overwrite;
+ if ($LogPath.Exists) {
+  Invoke-Wevtutil -ExportLog -LogPath $LogPath.FullName -Overwrite $Overwrite;
  }
  else {
-  throw "$($LogPath) must be a file and path to a log file"
+  throw "$($LogPath.FullName) must be a file and path to a log file"
  }
 }
 Function Save-Log {
@@ -340,13 +340,13 @@ Function Save-Log {
  Param
  (
   [Parameter(Mandatory = $true, ParameterSetName = 'archive-log')]
-  [string]$LogPath
+  [System.IO.FileInfo]$LogPath
  )
- if ((Test-Path $LogPath)) {
-  Invoke-Wevtutil -ArchiveLog -LogPath $LogPath;
+ if ($LogPath.Exists) {
+  Invoke-Wevtutil -ArchiveLog -LogPath $LogPath.FullName;
  }
  else {
-  throw "$($LogPath) must be a file and path to a log file"
+  throw "$($LogPath.FullName) must be a file and path to a log file"
  }
 }
 Function Clear-Log {
@@ -379,10 +379,10 @@ Function Clear-Log {
   [Parameter(Mandatory = $true, ParameterSetName = 'clear-log')]
   [string]$LogName,
   [Parameter(Mandatory = $false, ParameterSetName = 'clear-log')]
-  [string]$LogPath
+  [System.IO.FileInfo]$LogPath
  )
  if (Invoke-Wevtutil -EnumLog | Where-Object { $_ -eq $Logname }) {
-  if (([System.IO.FileInfo]$LogPath).Extension.ToLower() -eq '.evtx') {
+  if ($Logpath.Extension.ToLower() -eq '.evtx') {
    Invoke-Wevtutil -ClearLog -LogName "`"$Logname`"" -LogPath $LogPath
   }
  }
