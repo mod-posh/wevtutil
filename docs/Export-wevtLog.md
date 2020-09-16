@@ -29,7 +29,8 @@ will be stored.
 ## EXAMPLES
 
 ### EXAMPLE 1
-``` powershell
+```
+powershell
 Export-WevtLog -LogName Microsoft-Windows-CAPI2/Operational -ExportFile C:\temp\capi2-operational.evtx
 
 # jspatton@IT08082 | 14:51:10 | 03-02-2015 | C:\projects\mod-posh\powershell\production #
@@ -52,7 +53,7 @@ Export the CAPI log to a file, then get information from the file using Get-Wevt
 A path to the file where the exported events will be stored.
 
 ```yaml
-Type: System.IO.FileInfo
+Type: FileInfo
 Parameter Sets: (All)
 Aliases:
 
@@ -72,7 +73,7 @@ If true, and the export file specified in
 confirmation.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
@@ -96,7 +97,6 @@ Created by   : jspatton
 Date Coded   : 03/02/2015 11:15:23
 
 ## RELATED LINKS
-
 
 [MSDN](https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396)
 

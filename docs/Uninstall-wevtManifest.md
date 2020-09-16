@@ -25,7 +25,8 @@ the Windows Event Log SDK at the Microsoft Developers Network
 ## EXAMPLES
 
 ### EXAMPLE 1
-``` powershell
+```
+powershell
 Uninstall-WevtManifest -Manifest C:\Temp\Sample-Manifest.man
 ```
 
@@ -39,7 +40,7 @@ more details.
 https://msdn.microsoft.com/en-us/library/windows/desktop/dd996930(v=vs.85).aspx
 
 ```yaml
-Type: System.IO.FileInfo
+Type: FileInfo
 Parameter Sets: (All)
 Aliases:
 
@@ -63,7 +64,6 @@ Created by   : jspatton
 Date Coded   : 03/02/2015 10:30:24
 
 ## RELATED LINKS
-
 
 [MSDN](https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396)
 

@@ -71,7 +71,7 @@ Description = 'A PowerShell wrapper for the wevtutil command-line utility'
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = 'Get-Log', 'Get-LogInfo', 'Get-Publisher', 'Export-Log', 'Save-Log', 
                'Clear-Log', 'Install-Manifest', 'Uninstall-Manifest', 'Find-Event', 
-               'Set-Log', 'Invoke-Wevtutil'
+               'Set-Log'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()

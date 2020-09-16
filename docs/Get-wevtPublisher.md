@@ -29,7 +29,8 @@ Displays the configuration information for the specified event publisher.
 ## EXAMPLES
 
 ### EXAMPLE 1
-``` powershell
+```
+powershell
 Get-WevtPublisher -List |Select-String "capi"
 
 Microsoft-Windows-CAPI2
@@ -39,7 +40,8 @@ Microsoft-Windows-WMPNSS-PublicAPI
 Filter the list of Publishers to find just the ones related to CAPI
 
 ### EXAMPLE 2
-``` powershell
+```
+powershell
 Get-WevtPublisher -PublisherName Microsoft-Windows-CAPI2 -Metadata $true -Message $true -Format xml
 
 \<?xml version="1.0" encoding="UTF-8"?\>
@@ -73,9 +75,10 @@ The
 default is Text.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: get-publisher
 Aliases:
+Accepted values: xml, text
 
 Required: False
 Position: Named
@@ -88,7 +91,7 @@ Accept wildcard characters: False
 Displays the event publishers on the local computer.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: enum-publishers
 Aliases:
 
@@ -105,7 +108,7 @@ Displays the actual message instead of the numeric message ID.
 can be true or false.
 
 ```yaml
-Type: System.Boolean
+Type: Boolean
 Parameter Sets: get-publisher
 Aliases:
 
@@ -121,7 +124,7 @@ Gets metadata information for events that can be raised by this publisher.
 \<Metadata\> can be true or false.
 
 ```yaml
-Type: System.Boolean
+Type: Boolean
 Parameter Sets: get-publisher
 Aliases:
 
@@ -136,7 +139,7 @@ Accept wildcard characters: False
 The name of a Publisher
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: get-publisher
 Aliases:
 
@@ -160,7 +163,6 @@ Created by   : jspatton
 Date Coded   : 03/02/2015 9:24:02
 
 ## RELATED LINKS
-
 
 [MSDN](https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396)
 

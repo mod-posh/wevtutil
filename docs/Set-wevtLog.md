@@ -24,7 +24,8 @@ Modifies the configuration of the specified log.
 ## EXAMPLES
 
 ### EXAMPLE 1
-``` powershell
+```
+powershell
 Set-WevtLog -Logname Microsoft-Windows-CAPI2/Operational -Enabled $true -Retention $true -AutoBackup $true
 
 # jspatton@IT08082 | 13:16:15 | 03-02-2015 | C:\projects\mod-posh\powershell\production #
@@ -60,7 +61,7 @@ If this value is true, the retention
 (specified with the Retention option) must also be set to true.
 
 ```yaml
-Type: System.Boolean
+Type: Boolean
 Parameter Sets: (All)
 Aliases:
 
@@ -80,7 +81,7 @@ For more information about SDDL format, see the
 Microsoft Developers Network (MSDN) Web site (http://msdn.microsoft.com).
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -101,9 +102,24 @@ parameter.
 The log name will be read from the configuration file.
 
 ```yaml
-Type: System.IO.FileInfo
+Type: FileInfo
 Parameter Sets: (All)
 Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
 
 Required: False
 Position: Named
@@ -116,7 +132,7 @@ Accept wildcard characters: False
 {{ Fill Enabled Description }}
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -143,9 +159,10 @@ If you specify custom isolation, you
 must also provide a security descriptor by using the Channel option.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
+Accepted values: system, application, custom
 
 Required: False
 Position: Named
@@ -162,7 +179,7 @@ This option is only applicable to logs
 with a dedicated session.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -182,7 +199,7 @@ session.
 You can remove a level filter by setting \<Level\> to 0.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -197,7 +214,7 @@ Accept wildcard characters: False
 The name of a log
 
 ```yaml
-Type: System.Object
+Type: Object
 Parameter Sets: (All)
 Aliases:
 
@@ -214,7 +231,7 @@ Defines the log file name.
 where the Event Log service stores events for this log.
 
 ```yaml
-Type: System.IO.FileInfo
+Type: FileInfo
 Parameter Sets: (All)
 Aliases:
 
@@ -232,7 +249,7 @@ If not
 specified, the default is true.
 
 ```yaml
-Type: System.Boolean
+Type: Boolean
 Parameter Sets: (All)
 Aliases:
 
@@ -257,7 +274,7 @@ retention mode is false, incoming events overwrite the oldest
 events in the log.
 
 ```yaml
-Type: System.Boolean
+Type: Boolean
 Parameter Sets: (All)
 Aliases:
 
@@ -275,7 +292,7 @@ The minimum log size is
 so the value you enter will be rounded off accordingly.
 
 ```yaml
-Type: System.Int32
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
@@ -286,27 +303,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
-
-```yaml
-Type: System.Management.Automation.SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -WhatIf
 Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
 
@@ -330,7 +332,6 @@ Created by   : jspatton
 Date Coded   : 03/02/2015 8:50:14
 
 ## RELATED LINKS
-
 
 [MSDN](https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396)
 

@@ -38,7 +38,7 @@ Defines the log file name.
 where the Event Log service stores events for this log.
 
 ```yaml
-Type: System.IO.FileInfo
+Type: FileInfo
 Parameter Sets: (All)
 Aliases:
 
@@ -62,7 +62,6 @@ Created by   : jspatton
 Date Coded   : 03/02/2015 11:20:23
 
 ## RELATED LINKS
-
 
 [MSDN](https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396)
 

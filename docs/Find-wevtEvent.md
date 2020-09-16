@@ -46,7 +46,8 @@ path to a log file. If you use the StructuredQuery parameter,
 ## EXAMPLES
 
 ### EXAMPLE 1
-``` powershell
+```
+powershell
 Find-WevtEvent -LogName System -Direction $true -Count 1 -Format xml
 
 \<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'\>\<System\>\<Provider Name='Microsoft-Windows-Eventlog'
@@ -62,7 +63,8 @@ t\>
 Get the last log from the System log in XML format
 
 ### EXAMPLE 2
-``` powershell
+```
+powershell
 Find-WevtEvent -LogName System -Direction $true -Count 1 -Format xml -Query "*[System[Level=3]]"
 
 \<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'\>\<System\>\<Provider Name='Microsoft-Windows-Time-Serv
@@ -84,7 +86,7 @@ Specifies the path to a file that contains a bookmark from a
 previous query.
 
 ```yaml
-Type: System.IO.FileInfo
+Type: FileInfo
 Parameter Sets: LogName, LogFile, QueryFile
 Aliases:
 
@@ -99,7 +101,7 @@ Accept wildcard characters: False
 Sets the maximum number of events to read.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: LogName, LogFile, QueryFile
 Aliases:
 
@@ -117,7 +119,7 @@ true or false.
 If true, the most recent events are returned first.
 
 ```yaml
-Type: System.Boolean
+Type: Boolean
 Parameter Sets: LogName, LogFile, QueryFile
 Aliases:
 
@@ -137,9 +139,10 @@ The
 default is Text.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
+Accepted values: xml, text
 
 Required: False
 Position: Named
@@ -156,7 +159,7 @@ If true, the parameter to the
 command is the path to a log file.
 
 ```yaml
-Type: System.IO.FileInfo
+Type: FileInfo
 Parameter Sets: LogFile
 Aliases:
 
@@ -171,7 +174,7 @@ Accept wildcard characters: False
 The name of a log or path to a logfile/structured query file
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: LogName
 Aliases:
 
@@ -190,7 +193,7 @@ returned or exported.
 This option is not available when /sq is true.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: LogName, LogFile
 Aliases:
 
@@ -207,7 +210,7 @@ query.
 The file name extension should be .xml
 
 ```yaml
-Type: System.IO.FileInfo
+Type: FileInfo
 Parameter Sets: LogName, LogFile, QueryFile
 Aliases:
 
@@ -225,7 +228,7 @@ If true, \<Path\> is the path to
 a file that contains a structured query.
 
 ```yaml
-Type: System.IO.FileInfo
+Type: FileInfo
 Parameter Sets: QueryFile
 Aliases:
 
@@ -249,7 +252,6 @@ Created by   : jspatton
 Date Coded   : 03/02/2015 10:35:12
 
 ## RELATED LINKS
-
 
 [MSDN](https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396)
 

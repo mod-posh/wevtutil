@@ -24,7 +24,8 @@ You can run Get-WevtLog -List to obtain a list of log names.
 ## EXAMPLES
 
 ### EXAMPLE 1
-``` powershell
+```
+powershell
 Get-WevtLogInfo -LogName Microsoft-Windows-CAPI2/Operational
 
 creationTime: 2015-03-02T18:08:49.513Z
@@ -48,7 +49,7 @@ If true, the parameter to the
 command is the path to a log file.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
@@ -63,7 +64,7 @@ Accept wildcard characters: False
 The name of a log or path to a logfile/structured query file
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -87,7 +88,6 @@ Created by   : jspatton
 Date Coded   : 03/02/2015 10:47:25
 
 ## RELATED LINKS
-
 
 [MSDN](https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396)
 

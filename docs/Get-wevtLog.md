@@ -31,7 +31,8 @@ stored.
 ## EXAMPLES
 
 ### EXAMPLE 1
-``` powershell
+```
+powershell
 Get-WevtLog -Logname System -Format xml
 
 \<?xml version="1.0" encoding="UTF-8"?\>
@@ -51,7 +52,8 @@ Get-WevtLog -Logname System -Format xml
 Get configuration information about the System log in XML format
 
 ### EXAMPLE 2
-``` powershell
+```
+powershell
 Get-WevtLog -List
 
 Analytic
@@ -73,9 +75,10 @@ The
 default is Text.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: get-log
 Aliases:
+Accepted values: xml, text
 
 Required: False
 Position: Named
@@ -88,7 +91,7 @@ Accept wildcard characters: False
 If present displays the names of all logs.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: enum-logs
 Aliases:
 
@@ -103,7 +106,7 @@ Accept wildcard characters: False
 The name of a log
 
 ```yaml
-Type: System.Object
+Type: Object
 Parameter Sets: get-log
 Aliases:
 
@@ -127,7 +130,6 @@ Created by   : jspatton
 Date Coded   : 03/02/2015 8:26:42
 
 ## RELATED LINKS
-
 
 [MSDN](https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396)
 

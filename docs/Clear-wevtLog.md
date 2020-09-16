@@ -33,7 +33,7 @@ The Backup option can be used to back up the cleared events.
 The name of a log
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -50,7 +50,7 @@ stored.
 Include the .evtx extension in the name of the backup file.
 
 ```yaml
-Type: System.IO.FileInfo
+Type: FileInfo
 Parameter Sets: (All)
 Aliases:
 
@@ -74,7 +74,6 @@ Created by   : jspatton
 Date Coded   : 03/02/2015 11:26:42
 
 ## RELATED LINKS
-
 
 [MSDN](https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396)
 
