@@ -243,22 +243,8 @@ Function Export-Log {
   option, <Logname> must be a path to a file that contains a structured
   query. <Exportfile> is a path to the file where the exported events
   will be stored.
-  .PARAMETER Logname
-  The name of a log or path to a logfile/structured query file
-  .PARAMETER ExportFile
+  .PARAMETER LogPath
   A path to the file where the exported events will be stored.
-  .PARAMETER LogFile
-  Specifies that the events should be read from a log or from a log
-  file. <Logfile> can be true or false. If true, the parameter to the
-  command is the path to a log file.
-  .PARAMETER StructuredQuery
-  Specifies that events should be obtained with a structured query.
-  <Structquery> can be true or false. If true, <Path> is the path to
-  a file that contains a structured query.
-  .PARAMETER Query
-  Defines the XPath query to filter the events that are read or
-  exported. If this option is not specified, all events will be
-  returned or exported. This option is not available when /sq is true.
   .PARAMETER Overwrite
   Specifies that the export file should be overwritten. <Overwrite>
   can be true or false. If true, and the export file specified in
@@ -320,10 +306,6 @@ Function Save-Log {
   .PARAMETER LogPath
   Defines the log file name. <Logpath> is a full path to the file
   where the Event Log service stores events for this log.
-  .PARAMETER Locale
-  Defines a locale string that is used to print event text in a specific
-  locale. Only available when printing events in text format using the
-  /f option.
   .EXAMPLE
   .NOTES
   FunctionName : Save-WevtLog
@@ -358,7 +340,7 @@ Function Clear-Log {
   be used to back up the cleared events.
   .PARAMETER Logname
   The name of a log
-  .PARAMETER Backup
+  .PARAMETER LogPath
   Specifies the path to a file where the cleared events will be
   stored. Include the .evtx extension in the name of the backup file.
   .EXAMPLE
@@ -400,6 +382,15 @@ Function Install-Manifest {
   This is a valid XML file containing the Manifest, see MSDN for
   more details.
   https://msdn.microsoft.com/en-us/library/windows/desktop/dd996930(v=vs.85).aspx
+  .PARAMETER ResourcePath
+  ResourceFileName attribute of the Provider Element in the manifest to be
+  replaced. The VALUE should be the full path to the resource file.
+  .PARAMETER MessagePath
+  MessageFileName attribute of the Provider Element in the manifest to be replaced.
+  The VALUE should be the full path to the message file.
+  .PARAMETER ParameterPath
+  ParameterFileName attribute of the Provider Element in the manifest to be replaced
+  The VALUE should be the full path to the parameter file.
   .EXAMPLE
   Install-WevtManifest -Manifest C:\Temp\Sample-Manifest.man
 
@@ -512,7 +503,7 @@ Function Find-Event {
   .PARAMETER Bookmark
   Specifies the path to a file that contains a bookmark from a
   previous query.
-  .PARAMETER SaveBM
+  .PARAMETER SaveBookMark
   Specifies the path to a file that is used to save a bookmark of this
   query. The file name extension should be .xml
   .PARAMETER Direction
@@ -523,17 +514,8 @@ Function Find-Event {
   If <Format> is XML, the output is displayed in XML format. If
   <Format> is Text, the output is displayed without XML tags. The
   default is Text.
-  .PARAMETER Locale
-  Defines a locale string that is used to print event text in a specific
-  locale. Only available when printing events in text format using the
-  /f option.
   .PARAMETER Count
   Sets the maximum number of events to read.
-  .PARAMETER Element
-  Includes a root element when displaying events in XML. <Element> is
-  the string that you want within the root element. For example,
-  -Element root would result in XML that contains the root element
-  pair <root></root>.
   .EXAMPLE
   Find-WevtEvent -LogName System -Direction $true -Count 1 -Format xml
 
@@ -668,6 +650,9 @@ Function Set-Log {
   The name of a log
   .PARAMETER Enbled
   Enables or disables a log. <Enabled> can be true or false.
+  .PARAMETER Quiet
+  Quiet display option. No prompts or messages are displayed to the user. If not
+  specified, the default is true.
   .PARAMETER Isolation
   Sets the log isolation mode. <Isolation> can be system, application
   or custom. The isolation mode of a log determines whether a log
