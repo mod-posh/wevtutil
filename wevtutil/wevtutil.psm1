@@ -640,21 +640,21 @@ Function Find-Event {
         if ($Query) {
           $Params.Add('Query', $Query);
         }
-        $Params.Add('LogFile',$true);
+        $Params.Add('LogFile', $true);
       }
     }
     'QueryFile' {
       if ($StructuredQuery.Exists) {
         $Params.Add('LogName', $StructuredQuery);
-        $Params.Add('QueryFile',$true);
+        $Params.Add('QueryFile', $true);
       }
     }
   }
   if ($Bookmark.Exists -and $Bookmark.Extension.ToLower() -eq '.xml') {
-    $Params.Add('BookMark',$Bookmark);
+    $Params.Add('BookMark', $Bookmark);
   }
   if ($SaveBookMark.Exists -and $SaveBookMark.Extension.ToLower() -eq '.xml') {
-    $Params.Add('SaveBookMark',$SaveBookMark);
+    $Params.Add('SaveBookMark', $SaveBookMark);
   }
   Invoke-Wevtutil -QueryEvents @Params;
 }
@@ -750,7 +750,7 @@ Function Set-Log {
   .LINK
   https://technet.microsoft.com/en-us/library/cc732848.aspx
   #>
-  [CmdletBinding()]
+  [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
   Param
   (
     [Parameter(Mandatory = $true, ParameterSetName = 'set-log')]
@@ -787,56 +787,60 @@ Function Set-Log {
     [Parameter(Mandatory = $false, ParameterSetName = 'set-log')]
     [string]$Config,
   #>
-  $Params = @{};
-  if ($Config) {
-    if ($Config.Exists -and $Config.Extension -eq '.xml') {
-      $Params.Add('Config',$Config);
-    }
-  } else {
-    if ($Enabled) {
-      $Params.Add('Enabled',$Enabled);
-    }
-    if ($Quiet) {
-      $Params.Add('Quiet',$Quiet);
-    }
-    if ($MaxSize) {
-      #
-      # check between 1 and 16
-      #
-      $Params.Add('FileMax',$MaxSize);
-    }
-    if ($Isolation) {
-      $Params.Add('Isolation',$Isolation);
-    }
-    if ($Logpath) {
-      if ($Logpath.Exists) {
-        $Params.Add('LogPath',$Logpath);
+  if ($PSCmdlet.ShouldProcess("Change", "Change log settings for $($LogName)")) {
+    $Params = @{};
+    $Params.Add('LogName',$Logname);
+    if ($Config) {
+      if ($Config.Exists -and $Config.Extension -eq '.xml') {
+        $Params.Add('Config', $Config);
       }
     }
-    if ($Retention) {
-      $Params.Add('Retention',$Retention);
+    else {
+      if ($Enabled) {
+        $Params.Add('Enabled', $Enabled);
+      }
+      if ($Quiet) {
+        $Params.Add('Quiet', $Quiet);
+      }
+      if ($MaxSize) {
+        #
+        # check between 1 and 16
+        #
+        $Params.Add('FileMax', $MaxSize);
+      }
+      if ($Isolation) {
+        $Params.Add('Isolation', $Isolation);
+      }
+      if ($Logpath) {
+        if ($Logpath.Exists) {
+          $Params.Add('LogPath', $Logpath);
+        }
+      }
+      if ($Retention) {
+        $Params.Add('Retention', $Retention);
+      }
+      if ($AutoBackup) {
+        $Params.Add('AutoBackup', $AutoBackup);
+      }
+      if ($Size) {
+        #
+        # check divisible by 64
+        # min is 1024*1024
+        #
+        $Params.Add('MaxSize', $Size);
+      }
+      if ($Level) {
+        $Params.Add('Level', $Level);
+      }
+      if ($Keywords) {
+        $Params.Add('Keywords', $Keywords);
+      }
+      if ($Channel) {
+        $Params.Add('ChannelAccess', $Channel);
+      }
     }
-    if ($AutoBackup) {
-      $Params.Add('AutoBackup',$AutoBackup);
-    }
-    if ($Size) {
-      #
-      # check divisible by 64
-      # min is 1024*1024
-      #
-      $Params.Add('MaxSize',$Size);
-    }
-    if ($Level) {
-      $Params.Add('Level',$Level);
-    }
-    if ($Keywords) {
-      $Params.Add('Keywords',$Keywords);
-    }
-    if ($Channel) {
-      $Params.Add('ChannelAccess',$Channel);
-    }
+    Invoke-Wevtutil -SetLog @Params;
   }
-  Invoke-Wevtutil -SetLog @Params;
 }
 function Invoke-Wevtutil {
   param (
