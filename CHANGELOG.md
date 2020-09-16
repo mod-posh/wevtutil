@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Issue #3 Added ShouldProcess for Set-Log
 - Issue #6 Updated Comment-based Help
 - Issue #7 Created External Help
+- Issue #8 Created Updatable Help
 
 ## [1.0.0.0] - 2020-09-15
 ### Added
