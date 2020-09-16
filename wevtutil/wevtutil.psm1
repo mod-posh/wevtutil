@@ -332,30 +332,7 @@ Function Save-Log {
   }
 }
 Function Clear-Log {
-  <#
-  .SYNOPSIS
-  Clears events from the specified event log.
-  .DESCRIPTION
-  Clears events from the specified event log. The Backup option can
-  be used to back up the cleared events.
-  .PARAMETER Logname
-  The name of a log
-  .PARAMETER LogPath
-  Specifies the path to a file where the cleared events will be
-  stored. Include the .evtx extension in the name of the backup file.
-  .EXAMPLE
-  .NOTES
-  FunctionName : Clear-WevtLog
-  Created by   : jspatton
-  Date Coded   : 03/02/2015 11:26:42
-  .LINK
-  https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Clear-WevtLog
-  .LINK
-  https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
-  .LINK
-  https://technet.microsoft.com/en-us/library/cc732848.aspx
-  #>
-  [CmdletBinding()]
+  [CmdletBinding(HelpURI = 'https://github.com/mod-posh/wevtutil/blob/master/docs/Clear-Log.md#clear-log')]
   Param
   (
     [Parameter(Mandatory = $true, ParameterSetName = 'clear-log')]

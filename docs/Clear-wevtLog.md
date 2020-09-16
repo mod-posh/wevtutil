@@ -76,9 +76,8 @@ Date Coded   : 03/02/2015 11:26:42
 
 ## RELATED LINKS
 
-[https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Clear-WevtLog](https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Clear-WevtLog)
 
-[https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396](https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396)
+[MSDN](https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396)
 
-[https://technet.microsoft.com/en-us/library/cc732848.aspx](https://technet.microsoft.com/en-us/library/cc732848.aspx)
+[Technet](https://technet.microsoft.com/en-us/library/cc732848.aspx)
 
