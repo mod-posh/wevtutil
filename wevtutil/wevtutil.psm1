@@ -141,45 +141,7 @@ Function Clear-Log {
   }
 }
 Function Install-Manifest {
-  <#
-  .SYNOPSIS
-  Installs event publishers and logs from a manifest.
-  .DESCRIPTION
-  Installs event publishers and logs from a manifest. For more
-  information about event manifests and using this parameter, see
-  the Windows Event Log SDK at the Microsoft Developers Network
-  (MSDN) Web site (http://msdn.microsoft.com).
-  .PARAMETER Manifest
-  This is a valid XML file containing the Manifest, see MSDN for
-  more details.
-  https://msdn.microsoft.com/en-us/library/windows/desktop/dd996930(v=vs.85).aspx
-  .PARAMETER ResourcePath
-  ResourceFileName attribute of the Provider Element in the manifest to be
-  replaced. The VALUE should be the full path to the resource file.
-  .PARAMETER MessagePath
-  MessageFileName attribute of the Provider Element in the manifest to be replaced.
-  The VALUE should be the full path to the message file.
-  .PARAMETER ParameterPath
-  ParameterFileName attribute of the Provider Element in the manifest to be replaced
-  The VALUE should be the full path to the parameter file.
-  .EXAMPLE
-  Install-WevtManifest -Manifest C:\Temp\Sample-Manifest.man
-
-  Description
-  -----------
-  Installs the Sample-Manifest as a publisher
-  .NOTES
-  FunctionName : Install-WevtManifest
-  Created by   : jspatton
-  Date Coded   : 03/02/2015 10:26:34
-  .LINK
-  https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Install-WevtManifest
-  .LINK
-  https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
-  .LINK
-  https://technet.microsoft.com/en-us/library/cc732848.aspx
-  #>
-  [CmdletBinding()]
+  [CmdletBinding(HelpURI = 'https://github.com/mod-posh/wevtutil/blob/master/docs/Install-Manifest.md#install-manifest')]
   Param
   (
     [Parameter(Mandatory = $true, ParameterSetName = 'install-manifest')]
