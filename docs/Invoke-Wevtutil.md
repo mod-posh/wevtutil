@@ -5,7 +5,7 @@ online version: https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Install
 schema: 2.0.0
 ---
 
-# Invoke-wevtWevtutil
+# Invoke-Wevtutil
 
 ## SYNOPSIS
 {{ Fill in the Synopsis }}

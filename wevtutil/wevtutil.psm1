@@ -481,6 +481,7 @@ Function Set-Log {
   }
 }
 function Invoke-Wevtutil {
+  [CmdletBinding(HelpURI = 'https://github.com/mod-posh/wevtutil/blob/master/docs/Invoke-Wevtutil.md#invoke-wevtutil')]
   param (
     [Parameter(Mandatory = $false, ParameterSetName = 'enum-logs')]
     [switch]$EnumLog,
