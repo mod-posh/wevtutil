@@ -19,23 +19,18 @@ Export-wevtLog -LogPath <FileInfo> [-Overwrite] [<CommonParameters>]
 
 ## DESCRIPTION
 Exports events from an event log, from a log file, or using
-a structured query to the specified file.
-By default, you provide
-a log name for \<Logname\>.
-However, if you use the LogFile option, then
-\<Logname\> must be a path to a log file.
-If you use the StructuredQuery
+a structured query to the specified file. By default, you provide
+a log name for \<Logname\>. However, if you use the LogFile option, then
+\<Logname\> must be a path to a log file. If you use the StructuredQuery
 option, \<Logname\> must be a path to a file that contains a structured
-query.
-\<Exportfile\> is a path to the file where the exported events
+query. \<Exportfile\> is a path to the file where the exported events
 will be stored.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+``` powershell
 Export-WevtLog -LogName Microsoft-Windows-CAPI2/Operational -ExportFile C:\temp\capi2-operational.evtx
-```
 
 # jspatton@IT08082 | 14:51:10 | 03-02-2015 | C:\projects\mod-posh\powershell\production #
 Get-WevtLogInfo -LogName C:\temp\capi2-operational.evtx -LogFile
@@ -47,9 +42,8 @@ fileSize: 1118208
 attributes: 32
 numberOfLogRecords: 409
 oldestRecordNumber: 1
+```
 
-Description
------------
 Export the CAPI log to a file, then get information from the file using Get-WevtLogInfo
 
 ## PARAMETERS

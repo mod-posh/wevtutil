@@ -18,17 +18,14 @@ Get-wevtLogInfo -LogName <String> [-LogFile] [<CommonParameters>]
 
 ## DESCRIPTION
 Displays status information about an event log or log file.
-If the
-LogFile option is used, \<Logname\> is a path to a log file.
-You can
-run Get-WevtLog -List to obtain a list of log names.
+If the LogFile option is used, \<Logname\> is a path to a log file.
+You can run Get-WevtLog -List to obtain a list of log names.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+``` powershell
 Get-WevtLogInfo -LogName Microsoft-Windows-CAPI2/Operational
-```
 
 creationTime: 2015-03-02T18:08:49.513Z
 lastAccessTime: 2015-03-02T18:08:49.513Z
@@ -37,9 +34,8 @@ fileSize: 1052672
 attributes: 32
 numberOfLogRecords: 177
 oldestRecordNumber: 1
+```
 
-Description
------------
 Get the log information for the CAPI log
 
 ## PARAMETERS

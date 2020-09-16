@@ -18,8 +18,7 @@ Clear-wevtLog -LogName <String> [-LogPath <FileInfo>] [<CommonParameters>]
 
 ## DESCRIPTION
 Clears events from the specified event log.
-The Backup option can
-be used to back up the cleared events.
+The Backup option can be used to back up the cleared events.
 
 ## EXAMPLES
 

@@ -29,21 +29,18 @@ Displays the configuration information for the specified event publisher.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+``` powershell
 Get-WevtPublisher -List |Select-String "capi"
-```
 
 Microsoft-Windows-CAPI2
 Microsoft-Windows-WMPNSS-PublicAPI
+```
 
-Description
------------
 Filter the list of Publishers to find just the ones related to CAPI
 
 ### EXAMPLE 2
-```
+``` powershell
 Get-WevtPublisher -PublisherName Microsoft-Windows-CAPI2 -Metadata $true -Message $true -Format xml
-```
 
 \<?xml version="1.0" encoding="UTF-8"?\>
 \<provider name="Microsoft-Windows-CAPI2" guid="5bbca4a8-b209-48dc-a8c7-b23d3e5216fb" helpLink="http://go.microsoft.com/f
@@ -61,9 +58,8 @@ dll" messageFileName="C:\Windows\System32\crypt32.dll" message="Microsoft-Window
 talog Database Debug"\>
 \</channel\>
 \</channels\>
+```
 
-Description
------------
 Get the configuration of the CAPI2 publisher with Metadata and Messages, in XML format.
 
 ## PARAMETERS

@@ -38,19 +38,16 @@ Find-wevtEvent [-Format <String>] [<CommonParameters>]
 
 ## DESCRIPTION
 Reads events from an event log, from a log file, or using a
-structured query.
-By default, you provide a log name for \<Logname\>.
+structured query. By default, you provide a log name for \<Logname\>.
 However, if you use the LogFile option, then \<Logname\> must be a
-path to a log file.
-If you use the StructuredQuery parameter,
+path to a log file. If you use the StructuredQuery parameter,
 \<Logname\> must be a path to a file that contains a structured query.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+``` powershell
 Find-WevtEvent -LogName System -Direction $true -Count 1 -Format xml
-```
 
 \<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'\>\<System\>\<Provider Name='Microsoft-Windows-Eventlog'
 Guid='{fc65ddd8-d6ef-4962-83d5-6e5cfe9ce148}'/\>\<EventID\>105\</EventID\>\<Version\>0\</Version\>\<Level\>4\</Level\>\<Task\>105\</Tas
@@ -60,15 +57,13 @@ puter\>it08082.home.ku.edu\</Computer\>\<Security/\>\</System\>\<UserData\>\<Aut
 2004/08/windows/eventlog'\>\<Channel\>Microsoft-Windows-CAPI2/Operational\</Channel\>\<BackupPath\>C:\Windows\System32\Winevt\L
 ogs\Archive-Microsoft-Windows-CAPI2%4Operational-2015-03-02-19-31-37-619.evtx\</BackupPath\>\</AutoBackup\>\</UserData\>\</Even
 t\>
+```
 
-Description
------------
 Get the last log from the System log in XML format
 
 ### EXAMPLE 2
-```
+``` powershell
 Find-WevtEvent -LogName System -Direction $true -Count 1 -Format xml -Query "*[System[Level=3]]"
-```
 
 \<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'\>\<System\>\<Provider Name='Microsoft-Windows-Time-Serv
 ice' Guid='{06EDCFEB-0FD0-4E53-ACCA-A6F8BBF81BCB}'/\>\<EventID\>129\</EventID\>\<Version\>0\</Version\>\<Level\>3\</Level\>\<Task\>0\</T
@@ -78,9 +73,8 @@ EventRecordID\>125419\</EventRecordID\>\<Correlation/\>\<Execution ProcessID='10
 COVERY_ERROR'\>\<Data Name='ErrorMessage'\>The entry is not found.
 (0x800706E1)\</Data\>\<Data Name='RetryMinutes'\>15\</Data\>\</
 EventData\>\</Event\>
+```
 
-Description
------------
 Use an XPATH query to get the most recent Level 3 event
 
 ## PARAMETERS

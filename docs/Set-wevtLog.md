@@ -24,9 +24,8 @@ Modifies the configuration of the specified log.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+``` powershell
 Set-WevtLog -Logname Microsoft-Windows-CAPI2/Operational -Enabled $true -Retention $true -AutoBackup $true
-```
 
 # jspatton@IT08082 | 13:16:15 | 03-02-2015 | C:\projects\mod-posh\powershell\production #
 Get-WevtLog -Logname Microsoft-Windows-CAPI2/Operational
@@ -44,9 +43,8 @@ autoBackup: true
 maxSize: 1052672
 publishing:
 fileMax: 1
+```
 
-Description
------------
 Enable the CAPI2 log, and set it's retention and autobackup settings.
 Then use Get-WevtLog
 to confirm.

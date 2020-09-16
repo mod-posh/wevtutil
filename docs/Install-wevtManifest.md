@@ -19,20 +19,16 @@ Install-wevtManifest -Manifest <FileInfo> [-ResourcePath <FileInfo>] [-MessagePa
 
 ## DESCRIPTION
 Installs event publishers and logs from a manifest.
-For more
-information about event manifests and using this parameter, see
+For more information about event manifests and using this parameter, see
 the Windows Event Log SDK at the Microsoft Developers Network
 (MSDN) Web site (http://msdn.microsoft.com).
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+``` powershell
 Install-WevtManifest -Manifest C:\Temp\Sample-Manifest.man
-```
 
-Description
------------
 Installs the Sample-Manifest as a publisher
 
 ## PARAMETERS

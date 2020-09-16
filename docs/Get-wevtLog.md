@@ -31,9 +31,8 @@ stored.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+``` powershell
 Get-WevtLog -Logname System -Format xml
-```
 
 \<?xml version="1.0" encoding="UTF-8"?\>
 \<channel name="System" enabled="true" type="Admin" owningPublisher="" isolation="System" channelAccess="O:BAG:SYD:(A;;0xf0007;;;SY)(A;;0x7;;;BA)(A;;0x3;;;BO)(A;;0x5;;;SO)(A;;0x1;;;IU)(A;;0x3;;;SU)(A;;0x1;;;S-1-5-3)(A;;0x2;;;S-1-5-33)(A;;0x1;;;S-1-5-32-573)" xmlns="http://schemas.microsoft.com/win/2004/08/events"\>
@@ -47,23 +46,20 @@ Get-WevtLog -Logname System -Format xml
 \<fileMax\>1\</fileMax\>
 \</publishing\>
 \</channel\>
+```
 
-Description
------------
 Get configuration information about the System log in XML format
 
 ### EXAMPLE 2
-```
+``` powershell
 Get-WevtLog -List
-```
 
 Analytic
 Application
 Cisco AnyConnect Secure Mobility Client
 ConnectionInfo
+```
 
-Description
------------
 Get a list of all logs available
 
 ## PARAMETERS

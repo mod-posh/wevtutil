@@ -18,11 +18,9 @@ Save-wevtLog -LogPath <FileInfo> [<CommonParameters>]
 
 ## DESCRIPTION
 Archives the specified log file in a self-contained format.
-A
-subdirectory with the name of the locale is created and all locale-
+A subdirectory with the name of the locale is created and all locale-
 specific information is saved in that subdirectory.
-After the
-directory and log file are created by running Save-WevtLog, events
+After the directory and log file are created by running Save-WevtLog, events
 in the file can be read whether the publisher is installed or not.
 
 ## EXAMPLES
