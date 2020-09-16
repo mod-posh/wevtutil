@@ -45,70 +45,7 @@ Function Get-LogInfo {
   }
 }
 Function Get-Publisher {
-  <#
-  .SYNOPSIS
-  Displays the configuration information for the specified event publisher.
-  .DESCRIPTION
-  Displays the configuration information for the specified event publisher.
-  .PARAMETER List
-  Displays the event publishers on the local computer.
-  .PARAMETER PublisherName
-  The name of a Publisher
-  .PARAMETER Metadata
-  Gets metadata information for events that can be raised by this publisher.
-  <Metadata> can be true or false.
-  .PARAMETER Message
-  Displays the actual message instead of the numeric message ID. <Message>
-  can be true or false.
-  .PARAMETER Format
-  Specifies that the output should be either XML or text format.
-  If <Format> is XML, the output is displayed in XML format. If
-  <Format> is Text, the output is displayed without XML tags. The
-  default is Text.
-  .EXAMPLE
-  Get-WevtPublisher -List |Select-String "capi"
-
-  Microsoft-Windows-CAPI2
-  Microsoft-Windows-WMPNSS-PublicAPI
-
-  Description
-  -----------
-  Filter the list of Publishers to find just the ones related to CAPI
-  .EXAMPLE
-  Get-WevtPublisher -PublisherName Microsoft-Windows-CAPI2 -Metadata $true -Message $true -Format xml
-
-  <?xml version="1.0" encoding="UTF-8"?>
-  <provider name="Microsoft-Windows-CAPI2" guid="5bbca4a8-b209-48dc-a8c7-b23d3e5216fb" helpLink="http://go.microsoft.com/f
-  wlink/events.asp?CoName=Microsoft%20Corporation&amp;ProdName=Microsoft%c2%ae%20Windows%c2%ae%20Operating%20System&amp;Pr
-  odVer=6.3.9600.16431&amp;FileName=crypt32.dll&amp;FileVer=6.3.9600.16431" resourceFileName="C:\Windows\System32\crypt32.
-  dll" messageFileName="C:\Windows\System32\crypt32.dll" message="Microsoft-Windows-CAPI2" xmlns="http://schemas.microsoft
-  .com/win/2004/08/events">
-  <channels>
-  <channel name="Application" id="9" flags="1" message="Application">
-  </channel>
-  <channel name="Microsoft-Windows-CAPI2/Operational" id="16" flags="0" message="Microsoft-Windows-CAPI2/Operational">
-
-  </channel>
-  <channel name="Microsoft-Windows-CAPI2/Catalog Database Debug" id="17" flags="0" message="Microsoft-Windows-CAPI2/Ca
-  talog Database Debug">
-  </channel>
-  </channels>
-
-  Description
-  -----------
-  Get the configuration of the CAPI2 publisher with Metadata and Messages, in XML format.
-  .NOTES
-  FunctionName : Get-WevtPublisher
-  Created by   : jspatton
-  Date Coded   : 03/02/2015 9:24:02
-  .LINK
-  https://github.com/jeffpatton1971/mod-posh/wiki/WevtUtil#Get-WevtPublisher
-  .LINK
-  https://msdn.microsoft.com/en-us/library/windows/desktop/aa820708%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
-  .LINK
-  https://technet.microsoft.com/en-us/library/cc732848.aspx
-  #>
-  [CmdletBinding()]
+  [CmdletBinding(HelpURI = 'https://github.com/mod-posh/wevtutil/blob/master/docs/Get-Publisher.md#get-publisher')]
   Param
   (
     [Parameter(Mandatory = $true, ParameterSetName = 'enum-publishers')]
